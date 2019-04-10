@@ -5,7 +5,6 @@
 <html>
  <script runat="server" language="c#">
      string stdout = "";
-     string stderr = "";
      public struct PROCESS_INFORMATION
      {
          public IntPtr hProcess;
