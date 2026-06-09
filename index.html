@@ -91,9 +91,9 @@
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="stat-val">12</div><div class="stat-lbl">Shells</div></div>
+    <div class="stat"><div class="stat-val">19</div><div class="stat-lbl">Shells</div></div>
     <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Categories</div></div>
-    <div class="stat"><div class="stat-val">8</div><div class="stat-lbl">ATT&CK TTPs</div></div>
+    <div class="stat"><div class="stat-val">12</div><div class="stat-lbl">ATT&CK TTPs</div></div>
     <div class="stat"><div class="stat-val">2</div><div class="stat-lbl">Original shells</div></div>
   </div>
 
@@ -163,6 +163,24 @@
         <div class="card-desc">Drops and runs a .proj via MSBuild.exe. Tests LOLBin and trusted binary abuse.</div>
         <div class="card-footer"><span class="mitre">T1127.001</span><span class="gh-link">View →</span></div>
       </a>
+      <a class="card" data-cat="execution" href="https://github.com/0xAnalyst/webshells/blob/master/execution-evasion/CreateProcess_Dynamic.aspx">
+        <div class="card-tags"><span class="badge b-edr">EDR</span></div>
+        <div class="card-name">CreateProcess_Dynamic.aspx</div>
+        <div class="card-desc">kernel32!CreateProcessA via GetProcAddress — no static DllImport, no cleartext API names. Defeats static YARA string rules.</div>
+        <div class="card-footer"><span class="mitre">T1106 · T1027</span><span class="gh-link">View →</span></div>
+      </a>
+      <a class="card" data-cat="execution" href="https://github.com/0xAnalyst/webshells/blob/master/execution-evasion/ShellExecuteEx_Runas.aspx">
+        <div class="card-tags"><span class="badge b-edr">EDR</span></div>
+        <div class="card-name">ShellExecuteEx_Runas.aspx</div>
+        <div class="card-desc">shell32!ShellExecuteEx with runas + SW_HIDE. Avoids CreateProcess logging, runs under different user context with minimal command-line visibility.</div>
+        <div class="card-footer"><span class="mitre">T1548.002 · T1106</span><span class="gh-link">View →</span></div>
+      </a>
+      <a class="card" data-cat="execution" href="https://github.com/0xAnalyst/webshells/blob/master/execution-evasion/CreateProcessAsUser_Impersonate.aspx">
+        <div class="card-tags"><span class="badge b-edr">EDR</span></div>
+        <div class="card-name">CreateProcessAsUser_Impersonate.aspx</div>
+        <div class="card-desc">advapi32!CreateProcessAsUser with impersonated token + CREATE_SUSPENDED. Breaks process lineage — no parent-child relation to w3wp.exe.</div>
+        <div class="card-footer"><span class="mitre">T1134.001 · T1055</span><span class="gh-link">View →</span></div>
+      </a>
     </div>
   </div>
 
@@ -186,6 +204,12 @@
         <div class="card-desc">CSharpScript.EvaluateAsync — compiles C# at runtime. No disk write, no static signature.</div>
         <div class="card-footer"><span class="mitre">T1027.010</span><span class="gh-link">View →</span></div>
       </a>
+      <a class="card" data-cat="obfuscation" href="https://github.com/0xAnalyst/webshells/blob/master/obfuscation/InMemory_Assembly_XOR.aspx">
+        <div class="card-tags"><span class="badge b-edr">EDR</span></div>
+        <div class="card-name">InMemory_Assembly_XOR.aspx</div>
+        <div class="card-desc">XOR-encoded .NET assembly loaded via Assembly.Load — no file on disk, static analysis bypass via encoding. Uses System.Diagnostics.Process via reflected assembly.</div>
+        <div class="card-footer"><span class="mitre">T1027 · T1620</span><span class="gh-link">View →</span></div>
+      </a>
     </div>
   </div>
 
@@ -208,6 +232,12 @@
         <div class="card-name">SyscallShell.aspx</div>
         <div class="card-desc">Direct NtAllocateVirtualMemory syscall stubs. Bypasses user-mode EDR hooks entirely.</div>
         <div class="card-footer"><span class="mitre">T1055</span><span class="gh-link">View →</span></div>
+      </a>
+      <a class="card" data-cat="injection" href="https://github.com/0xAnalyst/webshells/blob/master/injection/WinExec_Syscall.aspx">
+        <div class="card-tags"><span class="badge b-edr">EDR</span></div>
+        <div class="card-name">WinExec_Syscall.aspx</div>
+        <div class="card-desc">ntdll!NtCreateProcess via direct syscall using Heaven's Gate stub — no ntdll in memory. Bypasses EDR user-land hooks completely.</div>
+        <div class="card-footer"><span class="mitre">T1055 · T1562.006</span><span class="gh-link">View →</span></div>
       </a>
     </div>
   </div>
@@ -254,6 +284,18 @@
         <div class="card-name">AMSIPatchShell.aspx</div>
         <div class="card-desc">AmsiScanBuffer patch — disables AMSI scanning in-process. Tests AMSI tamper detection rules.</div>
         <div class="card-footer"><span class="mitre">T1562.001</span><span class="gh-link">View →</span></div>
+      </a>
+      <a class="card" data-cat="defense" href="https://github.com/0xAnalyst/webshells/blob/master/defense-evasion/NtCreateProcess_Unhook.aspx">
+        <div class="card-tags"><span class="badge b-edr">EDR</span></div>
+        <div class="card-name">NtCreateProcess_Unhook.aspx</div>
+        <div class="card-desc">Fresh ntdll mapped from disk, EDR hooks removed before NtCreateProcess invocation. Tests whether EDR detects clean-copy unhooking.</div>
+        <div class="card-footer"><span class="mitre">T1562.001 · T1055</span><span class="gh-link">View →</span></div>
+      </a>
+      <a class="card" data-cat="defense" href="https://github.com/0xAnalyst/webshells/blob/master/defense-evasion/WMI_Com_ETW_AMSI_Patch.aspx">
+        <div class="card-tags"><span class="badge b-edr">EDR</span></div>
+        <div class="card-name">WMI_Com_ETW_AMSI_Patch.aspx</div>
+        <div class="card-desc">In-process AMSI + ETW patching before Win32_Process.Create via COM. Disables script scanning and ETW logging in one shell — combined evasion test.</div>
+        <div class="card-footer"><span class="mitre">T1562.001 · T1562.006 · T1047</span><span class="gh-link">View →</span></div>
       </a>
     </div>
   </div>
