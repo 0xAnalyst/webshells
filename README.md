@@ -132,3 +132,34 @@ webshells/
 ---
 
 > **Disclaimer:** These shells are written for authorized security testing and EDR/SIEM validation in controlled lab environments. Unauthorized use against systems you do not own or have explicit permission to test is illegal.
+
+---
+
+### Updates from technique table
+
+#### Execution evasion additions
+
+| File | Native API | ATT&CK | Evasion | YARA/EDR Bypass |
+|------|-----------|--------|---------|-----------------|
+| `CreateProcess_Dynamic.aspx` | `kernel32!CreateProcessA` | T1106 · T1027 | Dynamic P/Invoke via GetProcAddress, XOR-obfuscated strings | No static DllImport, no cleartext API names |
+| `ShellExecuteEx_Runas.aspx` | `shell32!ShellExecuteEx` | T1548.002 · T1106 | runas verb, SW_HIDE, minimal command-line logging | Avoids CreateProcess logging, runs as different user context |
+| `CreateProcessAsUser_Impersonate.aspx` | `advapi32!CreateProcessAsUser` | T1134.001 · T1055 | Impersonates logged-on user token, CREATE_SUSPENDED flag | Breaks process lineage detection, no parent-child relation |
+
+#### Injection additions
+
+| File | Native API | ATT&CK | Evasion | YARA/EDR Bypass |
+|------|-----------|--------|---------|-----------------|
+| `WinExec_Syscall.aspx` | `ntdll!NtCreateProcess` (syscall) | T1055 · T1562.006 | Direct syscall via Heaven's Gate stub, no ntdll in memory | Bypasses EDR user-land hooks completely |
+
+#### Obfuscation additions
+
+| File | Native API | ATT&CK | Evasion | YARA/EDR Bypass |
+|------|-----------|--------|---------|-----------------|
+| `InMemory_Assembly_XOR.aspx` | `System.Diagnostics.Process` (reflected) | T1027 · T1620 | XOR-encoded .NET assembly loaded via Assembly.Load | No file on disk, static analysis bypass via encoding |
+
+#### Defense evasion additions
+
+| File | Native API | ATT&CK | Evasion | YARA/EDR Bypass |
+|------|-----------|--------|---------|-----------------|
+| `NtCreateProcess_Unhook.aspx` | `ntdll!NtCreateProcess` | T1562.001 · T1055 | Fresh ntdll mapped from disk → invoke clean syscall | Removes EDR hooks from ntdll before invocation |
+| `WMI_Com_ETW_AMSI_Patch.aspx` | `Win32_Process.Create` via COM | T1562.001 · T1562.006 · T1047 | In-process AMSI + ETW patching before WMI call | Disables script scanning and ETW logging |
